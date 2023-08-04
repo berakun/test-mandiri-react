@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../../plugins/useAxios'
+import { api } from '../plugin/axios.js'
 
 function index() {
 
@@ -15,7 +15,7 @@ function index() {
     const [data, setData] = useState([])
 
     async function loadData() {
-        const response = await api.get('./post/books');
+        const response = await api.get('/v1/coins/');
         const data = await response.data.data;
         setData(data);
     }
@@ -25,6 +25,7 @@ function index() {
     }, []);
 
     const [searchValue, setSearchValue] = useState('')
+
     const filteredData = filterData(data, searchValue);
     function filterData(data, searchValue) {
         return data.filter((data) =>
@@ -35,6 +36,7 @@ function index() {
     return (
         <div className="text-black bg-slate-200 h-screen mx-auto">
             <div className="overflow-x-auto pt-4">
+                <input className='border border-spacing-3 rounded' placeholder='  Search...' onInput={(event) => { setSearchValue(event.target.value) }} value={searchValue} />
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-900 uppercase bg-gray-100">
                         <tr>
@@ -47,41 +49,26 @@ function index() {
                     </thead>
                     <tbody>
                         {/* {filteredData.map((data, index) => ( */}
-                        {filteredData.map((data, index) => (
+                        {filteredData.map((data) => (
                             <tr key={data.id} className="bg-white border-b text-gray-900">
                                 <th scope="row" className="px-6 py-4">
-                                    {/* Apple MacBook Pro 17" */}
                                     {data.id}
                                 </th>
                                 <td className="px-6 py-4">
-                                    {/* Silver */}
                                     {data.name}
                                 </td>
                                 <td className="px-6 py-4 text-center">
-                                    {/* Laptop */}
                                     {data.symbol}
                                 </td>
                                 <td className="px-6 py-4 text-center">
-                                    {/* $2999 */}
                                     {data.rank}
                                 </td>
                                 <td className="px-6 py-4 text-center">
-                                    {/* $2999 */}
                                     {data.type}
                                 </td>
                                 <td className="px-6 py-4 text-center">
-                                    {/* $2999 */}
                                     {data.is_active}
                                 </td>
-                                {actionOpen && (
-                                    <ul className="dropdown-menu pr-4 mt-10 pl-4 origin-top-right absolute py-1 right-4 w- rounded bg-white ring-2 ring-black ring-opacity-5">
-                                        <li>
-                                            <div>
-                                                <button onClick={() => handleLogout(deleteId)} className='text-sm' type="button">Delete</button>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                )}
                             </tr>
                         ))}
                     </tbody>
